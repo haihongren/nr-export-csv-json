@@ -18,11 +18,11 @@ function printHelp() {
 
 ==> Export Infra agent entity info==== 
 
-    Usage: node getInfaAgentEnvInfo.js [OPTIONS]
+    Usage: node getInfraAgentEnvInfo.js [OPTIONS]
         Examples:
-        node getInfaAgentEnvInfo.js
-        node getInfaAgentEnvInfo.js -t csv
-        node getInfaAgentEnvInfo.js -t json
+        node getInfraAgentEnvInfo.js
+        node getInfraAgentEnvInfo.js -t csv
+        node getInfraAgentEnvInfo.js -t json
 
 ==>  Export Synthetics entity info==== 
 

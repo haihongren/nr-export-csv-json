@@ -16,7 +16,7 @@
     export NR_USER_KEY="YOUR NR USER KEY"
     node getSyntheticsInfo.js
     node getAPMAgentEnvInfo.js 
-    node getInfaAgentEnvInfo.js    
+    node getInfraAgentEnvInfo.js    
     
 ###  Export Synthetics entity info
 > - export Synthetics monitor entities using GraphQL with pagination support
@@ -116,11 +116,11 @@ For example,  to report all the modules used in the scripts, use [require\((.*)\
 ### Export Infra agent entity info 
 > export Infra agent env information using GraphQL with pagination support
 
-    Usage: node getInfaAgentEnvInfo.js [OPTIONS]
+    Usage: node getInfraAgentEnvInfo.js [OPTIONS]
         Examples:
-        node getInfaAgentEnvInfo.js
-        node getInfaAgentEnvInfo.js -t csv
-        node getInfaAgentEnvInfo.js -t json
+        node getInfraAgentEnvInfo.js
+        node getInfraAgentEnvInfo.js -t csv
+        node getInfraAgentEnvInfo.js -t json
 
 - GraphQL to retrieve Infra agent info
   - User could add additional attributes to the GraphQL query without issue (always test it to be sure)
