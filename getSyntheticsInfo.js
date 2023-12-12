@@ -1,4 +1,4 @@
-let $http = require('request') 
+let axios=require('axios')
 let _ = require('lodash')
 let converter = require('json-2-csv');
 
@@ -19,30 +19,26 @@ const GRAPHQL_ENDPOINT =
     NEWRELIC_DC === 'EU' ? 'api.eu.newrelic.com' : 'api.newrelic.com'
 const DEFAULT_TIMEOUT = 10000 // You can specify a timeout for each task
 
-const genericServiceCall = function (responseCodes, options, success) {
+const genericServiceCall = async function (responseCodes, options, success) {
     !('timeout' in options) && (options.timeout = DEFAULT_TIMEOUT) //add a timeout if not already specified
     let possibleResponseCodes = responseCodes
   if (typeof responseCodes == 'number') {
         //convert to array if not supplied as array
         possibleResponseCodes = [responseCodes]
     }
-    return new Promise((resolve, reject) => {
-        $http(options, function callback(error, response, body) {
-            if (error) {
-                console.log('Request error:', error)
-                console.log('Response:', response)
-                console.log('Body:', body)
-                reject(`Connection error on url '${options.url}'`)
-            } else {
-              if (!possibleResponseCodes.includes(response.statusCode)) {
-                    let errmsg = `Expected [${possibleResponseCodes}] response code but got '${response.statusCode}' from url '${options.url}'`
-                    reject(errmsg)
-                } else {
-                    resolve(success(body, response, error))
-                }
-            }
-        })
-    })
+    try { 
+      let result= await axios({
+        method: options.method,
+        url: options.url,
+        data: options.body,
+        headers: options.headers
+        });
+        return success(result.data)
+    }catch(error){
+    console.error("An error occurred:", error.message);
+    process.exit(1)
+    }
+
 }
 
 async function getAttributeData(NR_USER_KEY, nextCursor) {
@@ -95,9 +91,8 @@ async function getAttributeData(NR_USER_KEY, nextCursor) {
     }
 
     return genericServiceCall([200], options, (body) => {
-        let jsonBody = JSON.parse(body)
-        return jsonBody
-    })
+      return body
+  })
 }
 
 
@@ -144,9 +139,8 @@ async function getScript(accountid, scriptGUID) {
     }
 
     return genericServiceCall([200], options, (body) => {
-        let jsonBody = JSON.parse(body)
-        return jsonBody
-    })
+      return body
+  })
 }
 
 function findSecureCredential(regexPattern, text) {
