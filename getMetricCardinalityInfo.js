@@ -74,7 +74,7 @@ async function getNRQLData(accountid) {
         actor {
           nrql(
             accounts: ${accountid}
-            query: "FROM Metric SELECT cardinality() SINCE today RAW "
+            query: "FROM Metric SELECT cardinality() SINCE today RAW facet metricName"
           ) {
             results
           }
@@ -102,7 +102,7 @@ async function getAccountsMetricCardinalityInfo(accounts) {
         const promises = chunk.map(async (item) => {
             try {
                 const nrqlResult = await getNRQLData(item.id);     
-                item.cardinality = nrqlResult?.data?.actor?.nrql?.results[0]?.['cardinality.null']||{};  
+                item.cardinality = nrqlResult?.data?.actor?.nrql?.results||{};  
             } catch (error) {
                 console.error('Error:', error);
             }
